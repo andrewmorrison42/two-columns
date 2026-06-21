@@ -126,7 +126,22 @@ function App() {
 // PHASE 1 — ENTER: name the situation in one line. Deliberately one line:
 // the constraint resists the rehearsing/elaborating the tool is here to stop.
 // ===========================================================================
+const ENTER_EXAMPLES = [
+  "Bracing for how [person] takes the feedback",
+  "Replaying the conversation with [person]",
+  "Tempted to soften the message to [person]",
+  "[person] made an unreasonable request and I said no",
+  "Worried [person] is annoyed with me",
+  "Rehearsing what I'll say to [person] tomorrow",
+  "Drafting a follow-up to smooth things over with [person]",
+];
+
 function Enter({ situation, setSituation, onNext }) {
+  const [exIndex, setExIndex] = useState(() => Math.floor(Math.random() * ENTER_EXAMPLES.length));
+  useEffect(() => {
+    const t = setInterval(() => setExIndex((i) => (i + 1) % ENTER_EXAMPLES.length), 3500);
+    return () => clearInterval(t);
+  }, []);
   return (
     <section style={styles.panel}>
       <p style={styles.lead}>
@@ -137,7 +152,7 @@ function Enter({ situation, setSituation, onNext }) {
       <input
         value={situation}
         onChange={(e) => setSituation(e.target.value)}
-        placeholder="e.g. Bracing for how Scott takes the feedback"
+        placeholder={`e.g. ${ENTER_EXAMPLES[exIndex]}`}
         style={styles.input}
         maxLength={140}
         autoFocus
